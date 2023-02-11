@@ -4,9 +4,10 @@ import Item from "./Item";
 import OrderItem from "./OrderItem";
 
 export default class Order {
-  cpf: Cpf;
-  orderItens: OrderItem[];
-  coupon: Coupon | undefined;
+  private cpf: Cpf;
+  private orderItens: OrderItem[];
+  private coupon: Coupon | undefined;
+  private freight: number = 0;
 
   constructor(cpf: string, readonly issueDate: Date = new Date()) {
     this.cpf = new Cpf(cpf);
@@ -14,11 +15,12 @@ export default class Order {
   }
 
   addItem(item: Item, quantity: number) {
+    this.freight += item.getFreight() * quantity;
     this.orderItens.push(new OrderItem(item.idItem, item.price, quantity))
   }
 
   addCoupon(coupon: Coupon) {
-    if(coupon.isExpired(this.issueDate)) return;
+    if (coupon.isExpired(this.issueDate)) return;
     this.coupon = coupon;
   }
 
@@ -28,6 +30,10 @@ export default class Order {
       return (total * this.coupon.percentage) / 100
     }
     return discount;
+  }
+
+  getFreight(){
+    return this.freight;
   }
 
   getTotal() {
