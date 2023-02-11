@@ -8,7 +8,7 @@ export default class Order {
   orderItens: OrderItem[];
   coupon: Coupon | undefined;
 
-  constructor(cpf: string) {
+  constructor(cpf: string, readonly issueDate: Date = new Date()) {
     this.cpf = new Cpf(cpf);
     this.orderItens = [];
   }
@@ -18,6 +18,7 @@ export default class Order {
   }
 
   addCoupon(coupon: Coupon) {
+    if(coupon.isExpired(this.issueDate)) return;
     this.coupon = coupon;
   }
 
