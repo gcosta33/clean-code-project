@@ -48,3 +48,12 @@ test("Should create a order with 3 items", function () {
   const freight = order.getFreight();
   expect(freight).toBe(260);
 })
+
+test("Should create a order and the order code", function () {
+  const order = new Order("601.780.430-87",new Date('2023-04-01'));
+  order.addItem(new Item(1, "Instrumentos Musicais", "Guitar", 1000, 100, 30, 10, 3), 1);
+  order.addItem(new Item(2, "Instrumentos Musicais", "Amplify", 5000, 100, 50, 50, 20), 1);
+  order.addItem(new Item(3, "Instrumentos Musicais", "Cable", 30, 10, 10, 10, 0.9), 3);
+  const code = order.getCode();
+  expect(code.value).toBe('202300000001');
+})
